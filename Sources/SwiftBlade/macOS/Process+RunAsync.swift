@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(macOS 13.0, *)
+#if os(macOS)
 public extension Process {
 
     /// Asynchronously runs a command-line process with the specified executable URL and arguments, returning the process outputs (standard, error).
@@ -93,3 +93,5 @@ fileprivate extension Pipe {
         return output
     }
 }
+
+#endif

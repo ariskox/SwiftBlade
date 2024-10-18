@@ -22,6 +22,14 @@ jobs:
 
     - name: Build
       run: swift build -v
-      
+
     - name: Run tests
       run: swift test -v
+
+    - name: Build (iOS)
+      run: >
+        swift build -v     
+        -Xswiftc "-sdk"
+        -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`"
+        -Xswiftc "-target"
+        -Xswiftc "arm64-apple-ios16.0-simulator"
