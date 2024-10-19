@@ -45,7 +45,7 @@ import SwiftUI
 actor ParallelProcessor<Job: ParallelJob>: NSObject {
     private var task: Task<Void, Error>?
     private var job: Job
-    private let parallelCompressions: Int
+    let parallelJobs: Int
 
     #if os(macOS)
     private let willTerminateNotificationName = NSApplication.willTerminateNotification
@@ -57,7 +57,7 @@ actor ParallelProcessor<Job: ParallelJob>: NSObject {
 
     init(concurrency: Int? = nil, job: Job) {
         // Calculate number of parallel compressions
-        parallelCompressions = concurrency ?? max(ProcessInfo.processInfo.activeProcessorCount - 1, 2)
+        parallelJobs = concurrency ?? max(ProcessInfo.processInfo.activeProcessorCount - 1, 2)
 
         self.job = job
 
@@ -75,7 +75,7 @@ actor ParallelProcessor<Job: ParallelJob>: NSObject {
         task?.cancel()
     }
 
-    func start() -> AsyncStream<JobStatus<Job.Element>> {
+    func start() -> AsyncStream<JobStatus<Job.Item>> {
         assert(self.task == nil, "Cannot start task twice")
 
         return AsyncStream { continuation in
@@ -89,39 +89,32 @@ actor ParallelProcessor<Job: ParallelJob>: NSObject {
 
                 try await withThrowingTaskGroup(of: Void.self) { group in
 
-                    var j = 0
-                    while let element = await job.getElement(at: j) {
-                        continuation.yield(.queued(await job.willQueue(element)))
-                        j += 1
+                    for item in await job.items {
+                        continuation.yield(.queued(item))
                         await Task.yield()
                     }
 
                     var i = 0
-                    while i < parallelCompressions, let element = await job.getElement(at: i) {
+                    while await i < job.items.count {
+                        let item = await job.items[i]
+
                         try Task.checkCancellation()
 
-                        group.addTask {
-                            try Task.checkCancellation()
-                            continuation.yield(.processing(await self.job.willStart(element)))
-
-                            let new = try await self.job.process(element)
-                            continuation.yield(.done(new))
+                        if i >= parallelJobs {
+                            try await group.next()
                         }
 
-                        i += 1
-                    }
-
-                    while let element = await job.getElement(at: i), let _ = try await group.next() {
-                        try Task.checkCancellation()
-
                         group.addTask {
-                            try Task.checkCancellation()
-                            continuation.yield(.processing(await self.job.willStart(element)))
+                            do {
+                                try Task.checkCancellation()
+                                continuation.yield(.processing(item))
 
-                            let new = try await self.job.process(element)
-                            continuation.yield(.done(new))
+                                try await self.job.process(item)
+                                continuation.yield(.done(item))
+                            } catch {
+                                continuation.yield(.error(item, error))
+                            }
                         }
-
                         i += 1
                     }
                 }
