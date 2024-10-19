@@ -79,23 +79,27 @@ actor ParallelProcessor<Job: ParallelJob>: NSObject {
         assert(self.task == nil, "Cannot start task twice")
 
         return AsyncStream { continuation in
-            self.task = Task {
+            self.task = Task(priority: .utility) {
+
+                defer { continuation.finish() }
 
                 guard await job.canStart else {
-                    continuation.finish()
                     return
                 }
 
-                defer {
-                    continuation.finish()
-                }
                 try await withThrowingTaskGroup(of: Void.self) { group in
+
+                    var j = 0
+                    while let element = await job.getElement(at: j) {
+                        continuation.yield(.queued(await job.willQueue(element)))
+                        j += 1
+                        await Task.yield()
+                    }
 
                     var i = 0
                     while i < parallelCompressions, let element = await job.getElement(at: i) {
                         try Task.checkCancellation()
 
-                        continuation.yield(.queued(await job.willQueue(element)))
                         group.addTask {
                             try Task.checkCancellation()
                             continuation.yield(.processing(await self.job.willStart(element)))
@@ -109,7 +113,6 @@ actor ParallelProcessor<Job: ParallelJob>: NSObject {
 
                     while let element = await job.getElement(at: i), let _ = try await group.next() {
                         try Task.checkCancellation()
-                        continuation.yield(.queued(await job.willQueue(element)))
 
                         group.addTask {
                             try Task.checkCancellation()
