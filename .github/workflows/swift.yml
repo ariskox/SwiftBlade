@@ -28,8 +28,5 @@ jobs:
 
     - name: Build (iOS)
       run: >
-        swift build -v     
-        -Xswiftc "-sdk"
-        -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`"
-        -Xswiftc "-target"
-        -Xswiftc "arm64-apple-ios16.0-simulator"
+        xcodebuild build -scheme SwiftBlade -sdk iphonesimulator18.0 -destination "OS=18.0,name=iPhone 16 Pro"
+
