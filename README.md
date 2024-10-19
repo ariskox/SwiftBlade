@@ -22,3 +22,24 @@ You can easily integrate SwiftBlade into your project using the Swift Package Ma
 dependencies: [
     .package(url: "https://github.com/ariskox/swiftblade.git", from: "1.0.0")
 ]
+```
+
+## List of iOS/macOS Extensions
+
+<details>
+<summary>Parallelization</summary>
+</br>
+<ul>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/ArrayExtensions.swift"><code>Parallelization of tasks</code></a></li>
+</ul>
+</details>
+
+## List of macOS Extensions
+
+<details>
+<summary>Process</summary>
+</br>
+<ul>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/ArrayExtensions.swift"><code>Process extensions</code></a></li>
+</ul>
+</details>
