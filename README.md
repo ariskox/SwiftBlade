@@ -30,7 +30,7 @@ dependencies: [
 <summary>Parallelization</summary>
 </br>
 <ul>
-<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/ArrayExtensions.swift"><code>Parallelization of tasks</code></a></li>
+<li><a href="https://github.com/ariskox/SwiftBlade/blob/main/Sources/SwiftBlade/common/ParallelProcessor/ParallelProcessor.swift"><code>Parallelization of tasks</code></a></li>
 </ul>
 </details>
 
@@ -40,6 +40,6 @@ dependencies: [
 <summary>Process</summary>
 </br>
 <ul>
-<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/ArrayExtensions.swift"><code>Process extensions</code></a></li>
+<li><a href="https://github.com/ariskox/SwiftBlade/blob/main/Sources/SwiftBlade/macOS/Process%2BRunAsync.swift"><code>Process extensions</code></a></li>
 </ul>
 </details>
