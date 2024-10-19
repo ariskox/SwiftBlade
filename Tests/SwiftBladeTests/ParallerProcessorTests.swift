@@ -103,12 +103,17 @@ extension JobStatus<Int>: Hashable {
     public func hash(into hasher: inout Hasher) {
         switch self {
         case .queued(let items):
+            hasher.combine("queued")
             hasher.combine(items)
         case .processing(let items):
+            hasher.combine("processing")
             hasher.combine(items)
         case .done(let items):
+            hasher.combine("done")
             hasher.combine(items)
-        case .error(let items, _):
+        case .error(let items, let error):
+            hasher.combine("error")
+            hasher.combine(error.localizedDescription)
             hasher.combine(items)
         }
     }
