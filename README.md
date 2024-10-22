@@ -30,7 +30,7 @@ dependencies: [
 <summary>Parallelization</summary>
 </br>
 <ul>
-<li><a href="https://github.com/ariskox/SwiftBlade/blob/main/Sources/SwiftBlade/common/ParallelProcessor/ParallelProcessor.swift"><code>Parallelization of tasks</code></a></li>
+<li><a href="https://github.com/ariskox/SwiftBlade/blob/main/Docs/ParallelProcessor.md"><code>Parallelization of tasks</code></a></li>
 </ul>
 </details>
 
