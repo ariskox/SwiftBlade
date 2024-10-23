@@ -28,7 +28,8 @@ func compress() async {
     let data: [Items] = // ..........
 
     let job = Compressor(items: data)
-    let processor = ParallelProcessor<Compressor>(job: job)
+    // Initialize the processor that will run 4 jobs in parallel
+    let processor = ParallelProcessor<Compressor>(concurrency: 4, job: job)
 
     for await update in await processor.start() {
         switch update {
@@ -46,5 +47,14 @@ func compress() async {
     // All operations have been completed or cancelled if 'cancel()' has been called on the processor.
     print("done")
 }
-
 ```
+
+
+The result:
+
+
+https://github.com/user-attachments/assets/d9a3633d-ac69-4a2a-be2c-745e73e0d11d
+
+
+
+
