@@ -26,8 +26,9 @@ public extension Process {
     /// - Example:
     /// ```swift
     /// let url = URL(fileURLWithPath: "/usr/bin/env")
-    /// let result = try await runAsync(url: url, arguments: ["echo", "Hello, world!"])
-    /// print(result.standard) // Outputs "Hello, world!"
+    /// let result = try await Process.runAsync(url: url, arguments: ["echo", "Hello, world!"])
+    /// print(result.standardOutput) // Outputs "Hello, world!"
+    /// print(result.standardError) // No errors, hopefully
     /// ```
     ///
     static func runAsync(url: URL, arguments: [String]? = nil) async throws -> Outputs {
