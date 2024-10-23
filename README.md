@@ -40,6 +40,6 @@ dependencies: [
 <summary>Process</summary>
 </br>
 <ul>
-<li><a href="https://github.com/ariskox/SwiftBlade/blob/main/Sources/SwiftBlade/macOS/Process%2BRunAsync.swift"><code>Process extensions</code></a></li>
+<li><a href="https://github.com/ariskox/SwiftBlade/blob/main/Docs/Process%2BAsync.md"><code>Process extensions</code></a></li>
 </ul>
 </details>
