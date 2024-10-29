@@ -56,7 +56,9 @@ public extension Process {
                 return result
 
             } catch {
-                process.terminate()
+                if process.isRunning {
+                    process.terminate()
+                }
                 throw error
             }
 
@@ -82,8 +84,8 @@ public extension Process {
     ///   - error: A `String` containing the error output from the process.
     /// - Conformance: This struct conforms to the `Sendable` protocol, allowing it to be safely used in concurrent contexts.
     struct Outputs: Sendable {
-        let standard: String
-        let error: String
+        public let standard: String
+        public let error: String
     }
 }
 
